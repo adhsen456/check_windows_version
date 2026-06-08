@@ -56,25 +56,7 @@ Setelah itu, Command Prompt akan tetap terbuka. Lanjutkan ke langkah berikutnya.
 
 Salin semua perintah di bawah ini, lalu paste ke Command Prompt dan tekan **Enter**.
 
-```cmd
-for /f "tokens=2 delims=:" %A in ('systeminfo ^| findstr /B /C:"OS Name" /C:"Nama OS"') do set "os=%A"
-set "os=!os:~1!"
-for /f "tokens=3" %A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v DisplayVersion 2^>nul ^| findstr /i "DisplayVersion"') do set "display=%A"
-if not defined display for /f "tokens=3" %A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ReleaseId 2^>nul ^| findstr /i "ReleaseId"') do set "display=%A"
-for /f "tokens=3" %A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber ^| findstr /i "CurrentBuildNumber"') do set "build=%A"
-for /f "tokens=3" %A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v UBR ^| findstr /i "UBR"') do set "ubr=%A"
-set /a "ubr=!ubr!"
-for /f "tokens=2 delims=:" %A in ('systeminfo ^| findstr /I /C:"Total Physical Memory" /C:"Memori Fisik Total"') do set "ram=%A"
-set "ram=!ram:~1!"
-for /f "tokens=2,*" %A in ('reg query "HKLM\HARDWARE\DESCRIPTION\System\CentralProcessor\0" /v ProcessorNameString ^| findstr /i "ProcessorNameString"') do set "cpu=%B"
-for /f "tokens=3" %A in ('reg query "HKLM\HARDWARE\DESCRIPTION\System\CentralProcessor\0" /v "~MHz" ^| findstr /i "MHz"') do set "mhz=%A"
-set /a "mhz=!mhz!"
-set /a "ghz=!mhz!/1000"
-set /a "dec=(!mhz!%1000)/10"
-set "dec=00!dec!"
-set "dec=!dec:~-2!"
-echo(!cpu! | findstr /i "GHz" >nul && set "cpufinal=!cpu!" || set "cpufinal=!cpu! @ !ghz!.!dec! GHz"
-echo OS: !os! ^| Display Version: !display! ^| Version: !build!.!ubr! ^| RAM: !ram! ^| CPU: !cpufinal!
+```powershell -NoProfile -Command "$cv=Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'; $os=Get-CimInstance Win32_OperatingSystem; $cpu=Get-CimInstance Win32_Processor | Select-Object -First 1; 'OS: {0} | Display Version: {1} | Version: 10.0.{2}.{3} | RAM: {4} GB | CPU: {5} @ {6} GHz' -f $os.Caption,$cv.DisplayVersion,$cv.CurrentBuildNumber,$cv.UBR,[math]::Round($os.TotalVisibleMemorySize/1MB,2),$cpu.Name,[math]::Round($cpu.MaxClockSpeed/1000,2)"
 ```
 
 ---
