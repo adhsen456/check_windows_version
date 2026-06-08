@@ -56,7 +56,8 @@ Setelah itu, Command Prompt akan tetap terbuka. Lanjutkan ke langkah berikutnya.
 
 Salin semua perintah di bawah ini, lalu paste ke Command Prompt dan tekan **Enter**.
 
-```powershell -NoProfile -Command "$cv=Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'; $os=Get-CimInstance Win32_OperatingSystem; $cpu=Get-CimInstance Win32_Processor | Select-Object -First 1; 'OS: {0} | Display Version: {1} | Version: 10.0.{2}.{3} | RAM: {4} GB | CPU: {5} @ {6} GHz' -f $os.Caption,$cv.DisplayVersion,$cv.CurrentBuildNumber,$cv.UBR,[math]::Round($os.TotalVisibleMemorySize/1MB,2),$cpu.Name,[math]::Round($cpu.MaxClockSpeed/1000,2)"
+```powershell
+-NoProfile -Command "$cv=Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'; $os=Get-CimInstance Win32_OperatingSystem; $cpu=Get-CimInstance Win32_Processor | Select-Object -First 1; 'OS: {0} | Display Version: {1} | Version: 10.0.{2}.{3} | RAM: {4} GB | CPU: {5} @ {6} GHz' -f $os.Caption,$cv.DisplayVersion,$cv.CurrentBuildNumber,$cv.UBR,[math]::Round($os.TotalVisibleMemorySize/1MB,2),$cpu.Name,[math]::Round($cpu.MaxClockSpeed/1000,2)"
 ```
 
 ---
